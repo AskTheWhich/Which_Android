@@ -3,21 +3,19 @@ package com.which;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.which.entities.LoginResponse;
 import com.which.utils.IdentityAPI;
 import com.which.utils.ServerConnection;
 import com.which.utils.resources.LoginData;
@@ -38,9 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -305,8 +302,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public static class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-        private static final String LOG_TAG = UserLoginTask.class.getSimpleName();
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+        private final String LOG_TAG = UserLoginTask.class.getSimpleName();
 
         private final String mEmail;
         private final String mPassword;
@@ -319,46 +316,49 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             IdentityAPI identityAPI = ServerConnection.createIdentityAPI();
-            final String[] api_token = new String[1];
 
-            identityAPI.doLogin(new LoginData(mEmail, mPassword)).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    try {
-                        api_token[0] = response.body().string();
-                        // TODO: Save api token
-                    } catch (IOException e) {
-                        //
-                    }
-                    Log.i(LOG_TAG, "Success: " + api_token[0]);
-                }
+            Call<LoginResponse> call = identityAPI.doLogin(new LoginData(mEmail, mPassword));
 
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.e(LOG_TAG, "Error", t);
+            String api_token;
+
+            try {
+                 Response<LoginResponse> response = call.execute();
+
+                if (response.isSuccessful()) {
+                    api_token = response.body().getToken();
+                    Log.i(LOG_TAG, "Success: " + api_token);
+                } else {
+                    Log.w(LOG_TAG, "Fail to login with response code: " + response.code()
+                            + " and response message: " + response.message());
+                    return false;
                 }
-            });
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Could not login", e);
+                return false;
+            }
+
+            // TODO: Save api token
 
             return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
-//            showProgress(false);
+            mAuthTask = null;
+            showProgress(false);
 
             if (success) {
-//                finish();
+                finish();
             } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
             }
         }
 
         @Override
         protected void onCancelled() {
-//            mAuthTask = null;
-//            showProgress(false);
+            mAuthTask = null;
+            showProgress(false);
         }
     }
 }
