@@ -1,7 +1,7 @@
 package com.which.utils;
 
-import com.which.entities.LoginResponse;
 import com.which.utils.resources.LoginData;
+import com.which.utils.resources.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

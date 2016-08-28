@@ -1,4 +1,4 @@
-package com.which.entities;
+package com.which.utils.resources;
 
 /**
  * Created by tomeramir on 27/08/2016.

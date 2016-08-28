@@ -1,9 +1,10 @@
-package com.which;
+package com.which.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.content.pm.PackageManager;
@@ -28,10 +29,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.which.entities.LoginResponse;
+import com.which.R;
+import com.which.data.db.WhichContract;
+import com.which.data.entitties.User;
 import com.which.utils.IdentityAPI;
 import com.which.utils.ServerConnection;
 import com.which.utils.resources.LoginData;
+import com.which.utils.resources.LoginResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -193,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(this, email, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -305,39 +309,50 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         private final String LOG_TAG = UserLoginTask.class.getSimpleName();
 
-        private final String mEmail;
-        private final String mPassword;
+        private final Context mContext;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        private User user;
+
+
+        UserLoginTask(Context context, String email, String password) {
+            mContext = context;
+
+            user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             IdentityAPI identityAPI = ServerConnection.createIdentityAPI();
 
-            Call<LoginResponse> call = identityAPI.doLogin(new LoginData(mEmail, mPassword));
-
-            String api_token;
+            Call<LoginResponse> call = identityAPI.doLogin(new LoginData(user));
 
             try {
                  Response<LoginResponse> response = call.execute();
 
                 if (response.isSuccessful()) {
-                    api_token = response.body().getToken();
-                    Log.i(LOG_TAG, "Success: " + api_token);
+                    user.setAccess_token(response.body().getToken());
+                    Log.i(LOG_TAG, "Success: " + user.getAccess_token());
                 } else {
                     Log.w(LOG_TAG, "Fail to login with response code: " + response.code()
                             + " and response message: " + response.message());
                     return false;
                 }
             } catch (IOException e) {
-                Log.e(LOG_TAG, "Could not login", e);
+                Log.e(LOG_TAG, "Could not reach server to login", e);
                 return false;
             }
 
             // TODO: Save api token
+            try {
+                Uri uri = mContext.getContentResolver().insert(WhichContract.UserEntry.CONTENT_URI, user.getContentValues());
+                Log.i(LOG_TAG, "Result uri: " + uri.toString());
+            } catch (UnsupportedOperationException e) {
+                Log.e(LOG_TAG, "Could not save user to db", e);
+                // TODO: show error messages
+                return false;
+            }
 
             return true;
         }

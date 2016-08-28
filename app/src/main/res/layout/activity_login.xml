@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.which.LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -19,10 +19,6 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:src="@drawable/" />-->
 
     <ScrollView
         android:id="@+id/login_form"
@@ -34,6 +30,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@mipmap/ic_launcher_web"
+                android:contentDescription="@string/icon_for_the_app" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

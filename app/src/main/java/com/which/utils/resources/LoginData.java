@@ -1,5 +1,7 @@
 package com.which.utils.resources;
 
+import com.which.data.entitties.User;
+
 /**
  * Created by tomeramir on 27/08/2016.
  */
@@ -10,9 +12,9 @@ public class LoginData {
     public LoginData() {
     }
 
-    public LoginData(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public LoginData(User user) {
+        this.email = user.getEmail();
+        this.password = user.getPassword();
     }
 
     public String getEmail() {
