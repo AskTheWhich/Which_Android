@@ -1,6 +1,7 @@
 package com.which.data.entitties;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.which.data.db.WhichContract.UserEntry;
 
@@ -9,6 +10,7 @@ import com.which.data.db.WhichContract.UserEntry;
  */
 public class User {
     private int id = -1;
+    private int user_id;
     private String email;
     private String password;
     private String access_token;
@@ -19,6 +21,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getEmail() {
@@ -56,5 +66,13 @@ public class User {
         contentValues.put(UserEntry.COLUMN_ACCESS_TOKEN, this.access_token);
 
         return contentValues;
+    }
+
+    public void fromCursor(Cursor cursor) {
+        this.id = cursor.getInt(cursor.getColumnIndex(UserEntry._ID));
+        this.user_id = cursor.getInt(cursor.getColumnIndex(UserEntry.COLUMN_USER_ID));
+        this.email = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_EMAIL));
+        this.password = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_PASSWORD));
+        this.access_token = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_ACCESS_TOKEN));
     }
 }
