@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.AskFragment">
+
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnCount="2"
+        android:orientation="vertical"
+        android:verticalSpacing="0dp"
+        android:horizontalSpacing="0dp"
+        android:rowCount="2"
+        android:stretchMode="columnWidth"
+        tools:context=".activities.AskFragment">
+
+        <TextView
+            android:id="@+id/textViewAsk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_columnSpan="2"
+            android:layout_row="0"
+            android:text="Did you sleep or plan on sleeping?"
+            android:textAlignment="center"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageButton
+            android:id="@+id/imageButtonLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:src="@mipmap/bad_luck_brian_came_to_a_hackathon_got_to_sleep"
+            android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:id="@+id/imageButtonRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:src="@mipmap/sleep_aint_no_one_got_time_for_that"
+            android:scaleType="centerCrop"
+        />
+    </GridLayout>
+</LinearLayout>
