@@ -19,14 +19,16 @@ public class UserProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private static final int USER       = 100;
-    private static final int USER_ID    = 101;
+    private static final int CURR_USER  = 101;
+    private static final int USER_ID    = 102;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = WhichContract.UserEntry.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, WhichContract.PATH_USER, USER);
-        matcher.addURI(authority, WhichContract.PATH_USER + "/#", USER_ID);
+        matcher.addURI(authority, WhichContract.PATH_USER,              USER);
+        matcher.addURI(authority, WhichContract.PATH_USER + "/current", USER);
+        matcher.addURI(authority, WhichContract.PATH_USER + "/#",       USER_ID);
 
         return matcher;
     }
@@ -41,13 +43,13 @@ public class UserProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
-        SQLiteDatabase readableDatabase = mWhichDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mWhichDbHelper.getReadableDatabase();
 
         int match = sUriMatcher.match(uri);
 
         switch (match) {
             case USER:
-                retCursor = readableDatabase.query(
+                retCursor = db.query(
                         WhichContract.UserEntry.TABLE_NAME,
                         projection,
                         null,
@@ -56,8 +58,18 @@ public class UserProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            case CURR_USER:
+                retCursor = db.query(
+                        WhichContract.UserEntry.TABLE_NAME,
+                        null,
+                        "WHERE " +WhichContract.UserEntry.COLUMN_ACCESS_TOKEN + " IS NOT NULL",
+                        null,
+                        null,
+                        null,
+                        null);
+                break;
             case USER_ID:
-                retCursor = readableDatabase.query(
+                retCursor = db.query(
                         WhichContract.UserEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -124,6 +136,11 @@ public class UserProvider extends ContentProvider {
 
         switch (match) {
             case USER:
+
+            case CURR_USER:
+                rowsDeleted = db.delete(WhichContract.UserEntry.TABLE_NAME,
+                        WhichContract.UserEntry.COLUMN_ACCESS_TOKEN + " IS NOT NULL", null);
+                break;
 
             case USER_ID:
                 rowsDeleted = db.delete(WhichContract.UserEntry.TABLE_NAME, selection, selectionArgs);

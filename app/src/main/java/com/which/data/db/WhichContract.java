@@ -48,9 +48,12 @@ public class WhichContract implements BaseColumns {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ANSWER;
 
         public static final String TABLE_NAME       = "answer";
-        public static final String COLUMN_ID        = "id";
         public static final String COLUMN_TYPE      = "type";
         public static final String COLUMN_VALUE     = "value";
+
+        public static Uri buildAnswerUri(long answer_id) {
+            return ContentUris.withAppendedId(CONTENT_URI, answer_id);
+        }
     }
 
     public static final class AskEntry implements BaseColumns {
@@ -63,10 +66,15 @@ public class WhichContract implements BaseColumns {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER;
 
-        public static final String TABLE_NAME       = "ask";
+        public static final String TABLE_NAME       = "ask";// TODO: Add type
         public static final String COLUMN_ASK_ID    = "id";
         public static final String COLUMN_TEXT      = "text";
+        public static final String COLUMN_OWNED     = "owned";
         public static final String FKEY_LEFT        = "left";
         public static final String FKEY_RIGHT       = "right";
+
+        public static Uri buildAskUri(long ask_id) {
+            return ContentUris.withAppendedId(CONTENT_URI, ask_id);
+        }
     }
 }

@@ -12,7 +12,7 @@ public class WhichDbHelper extends SQLiteOpenHelper {
     private final String LOG_TAG = getClass().getSimpleName();
 
     public static final String DATABASE_NAME = "which.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
 
     public WhichDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,7 +40,6 @@ public class WhichDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_ANSWER_TABLE = "CREATE TABLE " + WhichContract.Answer.TABLE_NAME + " (" +
                 WhichContract.Answer._ID            + " INTEGER PRIMARY KEY, " +
-                WhichContract.Answer.COLUMN_ID      + " TEXT UNIQUE NULL, " +
                 WhichContract.Answer.COLUMN_TYPE    + " TEXT NOT NULL, " +
                 WhichContract.Answer.COLUMN_VALUE   + " TEXT NOT NULL" +
                 ")";
@@ -56,6 +55,7 @@ public class WhichDbHelper extends SQLiteOpenHelper {
                 WhichContract.AskEntry._ID              + " INTEGER PRIMARY KEY, " +
                 WhichContract.AskEntry.COLUMN_ASK_ID    + " TEXT UNIQUE NULL, " +
                 WhichContract.AskEntry.COLUMN_TEXT      + " TEXT NOT NULL, " +
+                WhichContract.AskEntry.COLUMN_OWNED     + " INTEGER NOT NULL, " +
                 WhichContract.AskEntry.FKEY_LEFT        + " INTEGER NOT NULL, " +
                 WhichContract.AskEntry.FKEY_RIGHT       + " INTEGER NOT NULL, " +
 

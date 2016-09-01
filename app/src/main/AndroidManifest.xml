@@ -46,6 +46,18 @@
             android:authorities="com.which.user"
             android:enabled="true"
             android:exported="false" />
+
+        <provider
+            android:name=".data.providers.AnswerProvider"
+            android:authorities="com.which.answer"
+            android:enabled="true"
+            android:exported="false" />
+
+        <provider
+            android:name=".data.providers.AskProvider"
+            android:authorities="com.which.ask"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

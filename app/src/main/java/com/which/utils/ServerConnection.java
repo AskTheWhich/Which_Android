@@ -20,4 +20,8 @@ public class ServerConnection {
     public static IdentityAPI createIdentityAPI() {
         return createRetrofit().create(IdentityAPI.class);
     }
+
+    public static AskAPI createAskAPI() {
+        return createRetrofit().create(AskAPI.class);
+    }
 }

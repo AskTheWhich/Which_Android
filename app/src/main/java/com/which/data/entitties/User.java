@@ -10,10 +10,12 @@ import com.which.data.db.WhichContract.UserEntry;
  */
 public class User {
     private int id = -1;
-    private int user_id;
-    private String email;
+    private String user_id;
+    private String username;
     private String password;
     private String access_token;
+
+    public User() {}
 
     public int getId() {
         return id;
@@ -23,20 +25,20 @@ public class User {
         this.id = id;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -61,7 +63,7 @@ public class User {
         if (this.id > -1) {
             contentValues.put(UserEntry.COLUMN_ID, this.id);
         }
-        contentValues.put(UserEntry.COLUMN_USERNAME, this.email);
+        contentValues.put(UserEntry.COLUMN_USERNAME, this.username);
         contentValues.put(UserEntry.COLUMN_PASSWORD, this.password);
         contentValues.put(UserEntry.COLUMN_ACCESS_TOKEN, this.access_token);
 
@@ -70,8 +72,8 @@ public class User {
 
     public void fromCursor(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex(UserEntry._ID));
-        this.user_id = cursor.getInt(cursor.getColumnIndex(UserEntry.COLUMN_ID));
-        this.email = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_USERNAME));
+        this.user_id = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_ID));
+        this.username = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_USERNAME));
         this.password = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_PASSWORD));
         this.access_token = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_ACCESS_TOKEN));
     }

@@ -13,7 +13,21 @@ import com.which.data.entitties.User;
 public class UserDao {
     private static final String LOG_TAG = UserDao.class.getSimpleName();
 
-    public static User isLoggedIn(Context context) {
+    public static boolean isLoggedIn(Context context) {
+        return getCurrentUser(context) != null;
+    }
+
+    public static void logout(Context context) {
+        context.getContentResolver().delete(
+                WhichContract.UserEntry.CONTENT_URI.buildUpon().appendPath("current").build(),
+                null, null);
+    }
+
+    public static Uri insertUser(Context mContext, User user) {
+        return mContext.getContentResolver().insert(WhichContract.UserEntry.CONTENT_URI, user.getContentValues());
+    }
+
+    public static User getCurrentUser(Context context) {
         Cursor cursor = null;
         User res = null;
 
@@ -36,13 +50,5 @@ public class UserDao {
         }
 
         return res;
-    }
-
-    public static Uri insertUser(Context mContext, User user) {
-        return mContext.getContentResolver().insert(WhichContract.UserEntry.CONTENT_URI, user.getContentValues());
-    }
-
-    public static Uri getCurrentUser() {
-        return null; // TODO
     }
 }

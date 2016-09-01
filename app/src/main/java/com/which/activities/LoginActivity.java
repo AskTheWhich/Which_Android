@@ -319,7 +319,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mContext = context;
 
             user = new User();
-            user.setEmail(email);
+            user.setUsername(email);
             user.setPassword(password);
         }
 
@@ -346,6 +346,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             try {
+                UserDao.logout(mContext);
                 Uri uri = UserDao.insertUser(mContext, user);
 
                 if (uri == null) {

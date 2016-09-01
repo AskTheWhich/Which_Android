@@ -13,7 +13,7 @@ public class LoginData {
     }
 
     public LoginData(User user) {
-        this.username = user.getEmail();
+        this.username = user.getUsername();
         this.password = user.getPassword();
     }
 
