@@ -1,6 +1,7 @@
 package com.which.utils.resources;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.which.data.db.WhichContract;
 
@@ -74,5 +75,14 @@ public class AskEntity {
         contentValues.put(WhichContract.AskEntry.COLUMN_OWNED, this.owned ? 1 : 0);
 
         return contentValues;
+    }
+
+    public void fromCursor(Cursor cursor) {
+        this.ask_id = cursor.getInt(cursor.getColumnIndex(WhichContract.AskEntry.COLUMN_ASK_ID));
+        this.text = cursor.getString(cursor.getColumnIndex(WhichContract.AskEntry.COLUMN_TEXT));
+//        this.left = cursor.getString(cursor.getColumnIndex(WhichContract.AskEntry.));
+//        this.right = cursor.getString(cursor.getColumnIndex(WhichContract.AskEntry.));
+//        this.type = cursor.getString(cursor.getColumnIndex(WhichContract.AskEntry.));
+        this.owned = cursor.getInt(cursor.getColumnIndex(WhichContract.AskEntry.COLUMN_OWNED)) == 1;
     }
 }

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.which.R;
+import com.which.data.dao.UserDao;
 import com.which.data.entitties.User;
 
 public class SplashActivity extends AppCompatActivity {
@@ -54,8 +55,7 @@ public class SplashActivity extends AppCompatActivity {
         protected User doInBackground(Void... voids) {
             Log.i(LOG_TAG, "Checking if user is logged in");
 
-            //TODO: uncomment
-            return null; //UserDao.isLoggedIn(mContext);
+            return UserDao.getCurrentUser(mContext);
         }
 
         @Override

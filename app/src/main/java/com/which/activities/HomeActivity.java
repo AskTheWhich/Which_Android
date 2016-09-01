@@ -1,36 +1,48 @@
 package com.which.activities;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 
 import com.which.R;
+import com.which.activities.fragments.AskFragment;
+import com.which.data.dao.AskDao;
 import com.which.data.dao.UserDao;
 import com.which.data.db.WhichContract;
 import com.which.data.entitties.User;
-import com.which.tasks.GetAsksAsyncTask;
+import com.which.utils.AskAPI;
+import com.which.utils.ServerConnection;
+import com.which.utils.resources.AskList;
+import com.which.utils.resources.Token;
+
+import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 
     private static final int USER_DATA_LOADER = 0;
 
-    private TextView mWelcomeText;
+    private View container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mWelcomeText = (TextView) findViewById(R.id.welcome_text_view);
+        container = findViewById(R.id.container);
 
         getLoaderManager().initLoader(USER_DATA_LOADER, null, this);
     }
@@ -88,7 +100,6 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
             (new GetAsksAsyncTask(this, user.getAccess_token())).execute();
 
-            mWelcomeText.setText("Welcome " + user.getUsername());
         } else {
             Log.i(LOG_TAG, "Home Loader does not have data");
         }
@@ -97,5 +108,44 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         loader.reset();
+    }
+
+    public class GetAsksAsyncTask extends AsyncTask<Void, Void, Void> {
+        private Token token;
+        private Context context;
+
+        public GetAsksAsyncTask(Context context, String access_token) {
+            this.context = context;
+            this.token = new Token(access_token);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            AskAPI api = ServerConnection.createAskAPI();
+
+            Call<AskList> askListCall = api.getAsks(token);
+
+            try {
+                Response<AskList> response = askListCall.execute();
+
+                if (response.isSuccessful()) {
+                    AskDao.bulkSaveAsks(context, response.body().getAsks());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, new AskFragment(), "")
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 }
