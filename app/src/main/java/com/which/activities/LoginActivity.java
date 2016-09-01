@@ -31,7 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.which.R;
-import com.which.data.db.WhichContract;
+import com.which.data.dao.UserDao;
 import com.which.data.entitties.User;
 import com.which.utils.IdentityAPI;
 import com.which.utils.ServerConnection;
@@ -206,11 +206,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@");
+        return true; //email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 8 && password.length() < 30;
+        return true; //password.length() >= 8 && password.length() < 30;
     }
 
     /**
@@ -346,7 +346,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             try {
-                Uri uri = mContext.getContentResolver().insert(WhichContract.UserEntry.CONTENT_URI, user.getContentValues());
+                Uri uri = UserDao.insertUser(mContext, user);
 
                 if (uri == null) {
                     Log.e(LOG_TAG, "Something went wrong, URI is null");

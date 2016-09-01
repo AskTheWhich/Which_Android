@@ -14,9 +14,9 @@ import retrofit2.http.POST;
  * Created by tomeramir on 27/08/2016.
  */
 public interface IdentityAPI {
-    @POST("/login")
+    @POST("/api/login")
     Call<LoginResponse> doLogin(@Body LoginData loginData);
 
-    @POST("/register")
+    @POST("/api/register")
     Call<LoginResponse> doRegister(@Body RegisterData registerData);
 }

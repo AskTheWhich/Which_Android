@@ -59,9 +59,9 @@ public class User {
         ContentValues contentValues = new ContentValues();
 
         if (this.id > -1) {
-            contentValues.put(UserEntry.COLUMN_USER_ID, this.id);
+            contentValues.put(UserEntry.COLUMN_ID, this.id);
         }
-        contentValues.put(UserEntry.COLUMN_EMAIL, this.email);
+        contentValues.put(UserEntry.COLUMN_USERNAME, this.email);
         contentValues.put(UserEntry.COLUMN_PASSWORD, this.password);
         contentValues.put(UserEntry.COLUMN_ACCESS_TOKEN, this.access_token);
 
@@ -70,8 +70,8 @@ public class User {
 
     public void fromCursor(Cursor cursor) {
         this.id = cursor.getInt(cursor.getColumnIndex(UserEntry._ID));
-        this.user_id = cursor.getInt(cursor.getColumnIndex(UserEntry.COLUMN_USER_ID));
-        this.email = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_EMAIL));
+        this.user_id = cursor.getInt(cursor.getColumnIndex(UserEntry.COLUMN_ID));
+        this.email = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_USERNAME));
         this.password = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_PASSWORD));
         this.access_token = cursor.getString(cursor.getColumnIndex(UserEntry.COLUMN_ACCESS_TOKEN));
     }

@@ -13,6 +13,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -37,11 +38,17 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView mPictureView;
     private Bitmap bitmap = null;
     private String encodedImage = null;
+    private EditText mUsername;
+    private EditText mPassword;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        mPictureView = (ImageView) findViewById(R.id.profile_picture_view);
+        mUsername = (EditText) findViewById(R.id.register_username_input);
+        mPassword = (EditText) findViewById(R.id.register_password_input);
 
         ImageButton mCameraButton = (ImageButton) findViewById(R.id.take_picture_button);
         mCameraButton.setOnClickListener(new View.OnClickListener() {
@@ -68,21 +75,21 @@ public class RegisterActivity extends AppCompatActivity {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validateAndStart();
+                String username = mUsername.getText().toString();
+                String password = mPassword.getText().toString();
+                validateAndStart(username, password);
             }
         });
-
-        mPictureView = (ImageView) findViewById(R.id.profile_picture_view);
     }
 
-    private void validateAndStart() {
+    private void validateAndStart(String username, String password) {
         if (encodedImage == null) {
             // TODO: Validate for, and put default profile pic
 //            return;
         }
 
         RegisterAsyncTask uploadBitmapAsycTask =
-                new RegisterAsyncTask(this, encodedImage);
+                new RegisterAsyncTask(this, username, password, encodedImage);
 
         uploadBitmapAsycTask.execute();
     }
@@ -124,16 +131,18 @@ public class RegisterActivity extends AppCompatActivity {
 
     private class RegisterAsyncTask extends AsyncTask<Void, Void, String> {
         private final Context mContext;
-        private final String base64;
+        private final String profile_picture;
 
         private RegisterData register;
 
-        public RegisterAsyncTask(Context context, String base64) {
+        public RegisterAsyncTask(Context context, String username, String password, String profile_picture) {
             this.mContext = context;
-            this.base64 = base64;
+            this.profile_picture = profile_picture;
 
             register = new RegisterData();
-            register.setProfile_picture(base64);
+            register.setUsername(username);
+            register.setPassword(password);
+            register.setProfile_picture(profile_picture);
         }
 
         @Override

@@ -2,6 +2,7 @@ package com.which.data.dao;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 import com.which.data.db.WhichContract;
 import com.which.data.entitties.User;
@@ -35,5 +36,13 @@ public class UserDao {
         }
 
         return res;
+    }
+
+    public static Uri insertUser(Context mContext, User user) {
+        return mContext.getContentResolver().insert(WhichContract.UserEntry.CONTENT_URI, user.getContentValues());
+    }
+
+    public static Uri getCurrentUser() {
+        return null; // TODO
     }
 }
