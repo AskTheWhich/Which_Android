@@ -110,7 +110,7 @@ public class AskProvider extends ContentProvider {
                 // Delete by id
                 String[] arg = { uri.getLastPathSegment() };
                 deletedRows = db.delete(WhichContract.AskEntry.TABLE_NAME,
-                        WhichContract.AskEntry.COLUMN_ASK_ID + " = ?", args);
+                        WhichContract.AskEntry.COLUMN_ASK_ID + " = ?", arg);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

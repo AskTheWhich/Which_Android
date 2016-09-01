@@ -71,6 +71,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/skip_button"
         android:layout_gravity="bottom"
         android:text="@string/skip"
         android:layout_width="match_parent"

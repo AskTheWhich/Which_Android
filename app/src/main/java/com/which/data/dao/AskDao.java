@@ -65,4 +65,10 @@ public class AskDao {
 
         return ask;
     }
+
+    public static void deleteById(Context context, int askID) {
+        context.getContentResolver().delete(
+                WhichContract.AskEntry.CONTENT_URI.buildUpon().appendPath(askID + "").build()
+                , null, null);
+    }
 }

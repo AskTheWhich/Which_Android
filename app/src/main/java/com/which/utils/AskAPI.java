@@ -1,9 +1,11 @@
 package com.which.utils;
 
 import com.which.utils.resources.AskList;
+import com.which.utils.resources.RequestAnswer;
 import com.which.utils.resources.Token;
 
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
@@ -13,4 +15,7 @@ import retrofit2.http.POST;
 public interface AskAPI {
     @POST("/api/unanswered")
     Call<AskList> getAsks(@Body Token token);
+
+    @POST("/api/answer")
+    Call<Response<Void>> doAnswer(@Body RequestAnswer answer);
 }
