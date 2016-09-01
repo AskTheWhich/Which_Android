@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.which.R;
@@ -32,6 +34,10 @@ public class AskFragment extends Fragment {
     private static final String LOG_TAG = AskFragment.class.getSimpleName();
 
     private View mAskView;
+
+    private LinearLayout content;
+    private FrameLayout noQuestions;
+
     private TextView askText;
     private ImageButton leftImage;
     private Button leftButton;
@@ -54,6 +60,9 @@ public class AskFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         mAskView = inflater.inflate(R.layout.ask_item_layout, container, false);
+
+        content = (LinearLayout) mAskView.findViewById(R.id.content);
+        noQuestions = (FrameLayout) mAskView.findViewById(R.id.no_questions_view);
 
         askText = (TextView) mAskView.findViewById(R.id.ask_text_view);
 
@@ -191,8 +200,12 @@ public class AskFragment extends Fragment {
         @Override
         protected void onPostExecute(final AskEntity askEntity) {
             if (askEntity == null) {
-                // TODO: Show No Questions
+                fragment.content.setVisibility(View.GONE);
+                fragment.noQuestions.setVisibility(View.VISIBLE);
                 return;
+            } else {
+                fragment.noQuestions.setVisibility(View.GONE);
+                fragment.content.setVisibility(View.VISIBLE);
             }
 
             fragment.askID = askEntity.getAsk_id();
