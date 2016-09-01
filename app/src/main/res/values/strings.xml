@@ -7,13 +7,14 @@
     <string name="prompt_password">Password</string>
     <string name="action_register">Register</string>
     <string name="action_sign_in">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_email">This username address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    <string name="permission_rationale">"Contacts permissions are needed for providing username
         completions."
     </string>
     <string name="icon_for_the_app">Icon for the app</string>
     <string name="ask_the_which">Ask The Which</string>
+    <string name="title_activity_register">Register</string>
 </resources>

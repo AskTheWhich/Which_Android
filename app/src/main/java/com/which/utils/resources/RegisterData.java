@@ -1,21 +1,12 @@
 package com.which.utils.resources;
 
-import com.which.data.entitties.User;
-
 /**
- * Created by tomeramir on 27/08/2016.
+ * Created by tomeramir on 01/09/2016.
  */
-public class LoginData {
+public class RegisterData {
     private String username;
     private String password;
-
-    public LoginData() {
-    }
-
-    public LoginData(User user) {
-        this.username = user.getEmail();
-        this.password = user.getPassword();
-    }
+    private String profile_picture;
 
     public String getUsername() {
         return username;
@@ -31,5 +22,13 @@ public class LoginData {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProfile_picture() {
+        return profile_picture;
+    }
+
+    public void setProfile_picture(String profile_picture) {
+        this.profile_picture = profile_picture;
     }
 }

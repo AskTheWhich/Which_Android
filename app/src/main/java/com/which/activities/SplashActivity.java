@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.which.R;
-import com.which.data.dao.UserDao;
 import com.which.data.entitties.User;
 
 public class SplashActivity extends AppCompatActivity {
@@ -40,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 finish();
             }
-        }, 3000);
+        }, 0); // TODO: Change to 3000
     }
 
     private class LoadAppTask extends AsyncTask<Void, Void, User> {
@@ -55,7 +54,8 @@ public class SplashActivity extends AppCompatActivity {
         protected User doInBackground(Void... voids) {
             Log.i(LOG_TAG, "Checking if user is logged in");
 
-            return UserDao.isLoggedIn(mContext);
+            //TODO: uncomment
+            return null; //UserDao.isLoggedIn(mContext);
         }
 
         @Override

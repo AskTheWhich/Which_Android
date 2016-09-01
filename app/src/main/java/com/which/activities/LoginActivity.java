@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -57,13 +58,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
@@ -79,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -99,6 +93,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
+        mEmailRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -203,13 +206,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
         return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 8 && password.length() < 30;
     }
 
     /**
@@ -332,7 +333,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                  Response<LoginResponse> response = call.execute();
 
                 if (response.isSuccessful()) {
-                    user.setAccess_token(response.body().getToken());
+                    user.setAccess_token(response.body().getAccess_token());
                     Log.i(LOG_TAG, "Success: " + user.getAccess_token());
                 } else {
                     Log.w(LOG_TAG, "Fail to login with response code: " + response.code()
@@ -344,13 +345,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            // TODO: Save api token
             try {
                 Uri uri = mContext.getContentResolver().insert(WhichContract.UserEntry.CONTENT_URI, user.getContentValues());
+
+                if (uri == null) {
+                    Log.e(LOG_TAG, "Something went wrong, URI is null");
+                    return false;
+                }
+
                 Log.i(LOG_TAG, "Result uri: " + uri.toString());
             } catch (UnsupportedOperationException e) {
                 Log.e(LOG_TAG, "Could not save user to db", e);
-                // TODO: show error messages
                 return false;
             }
 
@@ -363,6 +368,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                Intent intent = new Intent(mContext, HomeActivity.class);
+                startActivity(intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

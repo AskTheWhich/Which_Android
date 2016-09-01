@@ -2,6 +2,7 @@ package com.which.utils;
 
 import com.which.utils.resources.LoginData;
 import com.which.utils.resources.LoginResponse;
+import com.which.utils.resources.RegisterData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,4 +16,7 @@ import retrofit2.http.POST;
 public interface IdentityAPI {
     @POST("/login")
     Call<LoginResponse> doLogin(@Body LoginData loginData);
+
+    @POST("/register")
+    Call<LoginResponse> doRegister(@Body RegisterData registerData);
 }
