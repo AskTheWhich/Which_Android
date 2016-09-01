@@ -22,7 +22,7 @@ public class AskProvider extends ContentProvider {
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = WhichContract.UserEntry.CONTENT_AUTHORITY;
+        final String authority = WhichContract.AskEntry.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, WhichContract.PATH_ASK, ASK);
         matcher.addURI(authority, WhichContract.PATH_ASK + "/#", ASK_ID);
@@ -90,8 +90,29 @@ public class AskProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(Uri uri, String where, String[] args) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int deletedRows = 0;
+
+        int match = sUriMatcher.match(uri);
+
+        switch(match) {
+            case ASK:
+                deletedRows = db.delete(WhichContract.AskEntry.TABLE_NAME, where, args);
+                break;
+            case ASK_ID:
+                // Delete by id
+                String[] arg = { uri.getLastPathSegment() };
+                deletedRows = db.delete(WhichContract.AskEntry.TABLE_NAME,
+                        WhichContract.AskEntry.COLUMN_ASK_ID + " = ?", args);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return deletedRows;
     }
 
     @Override

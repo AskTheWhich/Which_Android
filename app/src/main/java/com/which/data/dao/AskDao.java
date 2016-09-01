@@ -2,10 +2,8 @@ package com.which.data.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 
 import com.which.data.db.WhichContract;
-import com.which.utils.resources.Answer;
 import com.which.utils.resources.AskEntity;
 
 import java.util.List;
@@ -25,8 +23,8 @@ public class AskDao {
         Vector<ContentValues> cVVector = new Vector<>(asks.size());
 
         for (AskEntity ask: asks) {
-            ask.getLeft().setId(saveAnswer(context, ask.getLeft()));
-            ask.getRight().setId(saveAnswer(context, ask.getRight()));
+            ask.getLeft().setId(AnswerDao.saveAnswer(context, ask.getLeft()));
+            ask.getRight().setId(AnswerDao.saveAnswer(context, ask.getRight()));
 
             cVVector.add(ask.getContentValues());
         }
@@ -38,12 +36,8 @@ public class AskDao {
         }
     }
 
-    public static int saveAnswer(Context context, Answer answer) {
-        Uri res = context.getContentResolver().insert(WhichContract.Answer.CONTENT_URI, answer.getContentValues());
-
-        if (res != null)
-            return Integer.parseInt(res.getLastPathSegment());
-        else
-            return -1;
+    public static void deleteAll(Context context) {
+        context.getContentResolver().delete(WhichContract.AskEntry.CONTENT_URI, null, null);
+        AnswerDao.deleteAll(context);
     }
 }

@@ -21,6 +21,8 @@ public class UserDao {
         context.getContentResolver().delete(
                 WhichContract.UserEntry.CONTENT_URI.buildUpon().appendPath("current").build(),
                 null, null);
+
+        AskDao.deleteAll(context);
     }
 
     public static Uri insertUser(Context mContext, User user) {

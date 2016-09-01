@@ -63,6 +63,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Loader<Cursor> userDataLoader = null;
+
         try {
             userDataLoader = new CursorLoader(
                     this,
