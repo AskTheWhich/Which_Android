@@ -1,7 +1,6 @@
-package com.which.tasks;
+package com.which.utils.helper;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.which.data.dao.AskDao;
 import com.which.utils.AskAPI;
@@ -17,17 +16,9 @@ import retrofit2.Response;
 /**
  * Created by tomeramir on 01/09/2016.
  */
-public class GetAsksAsyncTask extends AsyncTask<Void, Void, Void> {
-    private Token token;
-    private Context context;
+public class GetAsksHelper {
 
-    public GetAsksAsyncTask(Context context, String access_token) {
-        this.context = context;
-        this.token = new Token(access_token);
-    }
-
-    @Override
-    protected Void doInBackground(Void... voids) {
+    public static void getTasks(Token token, Context context) {
         AskAPI api = ServerConnection.createAskAPI();
 
         Call<AskList> askListCall = api.getAsks(token);
@@ -41,14 +32,5 @@ public class GetAsksAsyncTask extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-
-
     }
 }

@@ -19,6 +19,7 @@ public class AskProvider extends ContentProvider {
 
     private static final int ASK = 100;
     private static final int ASK_ID = 101;
+    private static final int SINGLE_ASK = 102;
 
     private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -26,6 +27,7 @@ public class AskProvider extends ContentProvider {
 
         matcher.addURI(authority, WhichContract.PATH_ASK, ASK);
         matcher.addURI(authority, WhichContract.PATH_ASK + "/#", ASK_ID);
+        matcher.addURI(authority, WhichContract.PATH_ASK + "/single", SINGLE_ASK);
 
         return matcher;
     }
@@ -53,6 +55,10 @@ public class AskProvider extends ContentProvider {
 
                 resCursor = db.query(WhichContract.AskEntry.TABLE_NAME, null,
                         WhichContract.Answer._ID + " = ?", args, null, null, null);
+                break;
+            case SINGLE_ASK:
+                resCursor = db.query(WhichContract.AskEntry.TABLE_NAME,
+                        null, null, null, null, null, null, "1");
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported operation: " + uri);

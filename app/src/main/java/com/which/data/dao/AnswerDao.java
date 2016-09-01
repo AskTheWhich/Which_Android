@@ -1,6 +1,7 @@
 package com.which.data.dao;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.which.data.db.WhichContract;
@@ -21,5 +22,19 @@ public class AnswerDao {
 
     public static void deleteAll(Context context) {
         context.getContentResolver().delete(WhichContract.Answer.CONTENT_URI, null, null);
+    }
+
+    public static Answer getAnswerById(Context context, int answer_id) {
+        Cursor resCursor = context.getContentResolver().query(
+                WhichContract.Answer.CONTENT_URI.buildUpon().appendPath(answer_id + "").build(),
+                null, null, null, null);
+
+        if (!resCursor.moveToNext())
+            return null;
+
+        Answer answer = new Answer();
+        answer.fromCursor(resCursor);
+
+        return answer;
     }
 }

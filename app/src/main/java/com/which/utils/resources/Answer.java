@@ -1,6 +1,7 @@
 package com.which.utils.resources;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.which.data.db.WhichContract;
 
@@ -39,9 +40,15 @@ public class Answer {
     public ContentValues getContentValues() {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(WhichContract.Answer.COLUMN_VALUE, this.type);
-        contentValues.put(WhichContract.Answer.COLUMN_TYPE, this.value);
+        contentValues.put(WhichContract.Answer.COLUMN_VALUE, this.value);
+        contentValues.put(WhichContract.Answer.COLUMN_TYPE, this.type);
 
         return contentValues;
+    }
+
+    public void fromCursor(Cursor resCursor) {
+        this.id = resCursor.getInt(resCursor.getColumnIndex(WhichContract.Answer._ID));
+        this.type = resCursor.getString(resCursor.getColumnIndex(WhichContract.Answer.COLUMN_TYPE));
+        this.value = resCursor.getString(resCursor.getColumnIndex(WhichContract.Answer.COLUMN_VALUE));
     }
 }

@@ -3,7 +3,6 @@ package com.which.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -124,11 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void base64ToBitmap(String bitmap) {
-        byte[] imageAsBytes = Base64.decode(bitmap.getBytes(), Base64.DEFAULT);
-        mPictureView.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
-    }
-
     private class RegisterAsyncTask extends AsyncTask<Void, Void, String> {
         private final Context mContext;
         private final String profile_picture;
@@ -166,7 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String res) {
-//            ((RegisterActivity) mContext).base64ToBitmap(res);
+//            mPictureView.setImageBitmap(ImageHelper.base64ToBitmap(res));
             Intent intent = new Intent(mContext, HomeActivity.class);
             startActivity(intent);
             finish();

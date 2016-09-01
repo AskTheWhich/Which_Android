@@ -11,6 +11,6 @@ import retrofit2.http.POST;
  * Created by tomeramir on 01/09/2016.
  */
 public interface AskAPI {
-    @POST("/api/asks")
+    @POST("/api/unanswered")
     Call<AskList> getAsks(@Body Token token);
 }

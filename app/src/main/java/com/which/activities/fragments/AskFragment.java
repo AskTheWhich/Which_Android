@@ -1,36 +1,33 @@
 package com.which.activities.fragments;
 
-import android.database.Cursor;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
-import com.which.AskAdapter;
 import com.which.R;
-import com.which.data.db.WhichContract;
+import com.which.data.dao.AskDao;
+import com.which.data.dao.UserDao;
+import com.which.data.entitties.User;
+import com.which.utils.helper.GetAsksHelper;
 import com.which.utils.resources.AskEntity;
+import com.which.utils.resources.Token;
 
-/**
- * Created by tomeramir on 01/09/2016.
- */
-public class AskFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String LOG_TAG = AskFragment.class.getSimpleName();
-    private static final int ASK_DATA_LOADER = 1;
-
-    private AskEntity currAsk;
-    private CursorAdapter mAskAdapter;
-    private ListView mAskLayout;
+public class AskFragment extends Fragment {
+    private View mAskView;
+    private TextView askText;
+    private ImageButton leftImage;
+    private Button leftButton;
+    private ImageButton rightImage;
+    private Button rightButton;
 
     public AskFragment() {
-        // Requires Empty Constructor
     }
 
     @Override
@@ -42,44 +39,59 @@ public class AskFragment extends Fragment implements LoaderManager.LoaderCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        final View fragmentLayout =
-                inflater.inflate(R.layout.fragment_ask, container, false);
+        mAskView = inflater.inflate(R.layout.ask_item_layout, container, false);
 
-        mAskAdapter = new AskAdapter(getActivity(), null, 0);
+        askText = (TextView) mAskView.findViewById(R.id.ask_text_view);
+        leftImage = (ImageButton) mAskView.findViewById(R.id.left_image_button);
+        leftButton = (Button) mAskView.findViewById(R.id.left_button);
+        rightImage = (ImageButton) mAskView.findViewById(R.id.right_image_button);
+        rightButton = (Button) mAskView.findViewById(R.id.right_button);
 
-        mAskLayout = (ListView) fragmentLayout.findViewById(R.id.ask_layout);
-        mAskLayout.setAdapter(mAskAdapter);
+        (new GetAskAsyncTask(getActivity(), this)).execute();
 
-        getLoaderManager().initLoader(ASK_DATA_LOADER, null, this);
-
-        return fragmentLayout;
+        return mAskView;
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        Loader<Cursor> asks = null;
+    private class GetAskAsyncTask extends AsyncTask<Void, AskEntity, AskEntity> {
+        private AskFragment fragment;
+        private Context context;
 
-        try {
-            asks = new CursorLoader(
-                    getActivity(),
-                    WhichContract.AskEntry.CONTENT_URI,
-                    null,
-                    WhichContract.AskEntry.COLUMN_OWNED + " = 0",
-                    null, null);
-        } catch (UnsupportedOperationException e) {
-            Log.d(LOG_TAG, e.getLocalizedMessage());
+        public GetAskAsyncTask(Context context, AskFragment askFragment) {
+            this.context = context;
+            this.fragment = askFragment;
         }
 
-        return asks;
-    }
+        @Override
+        protected AskEntity doInBackground(Void... voids) {
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mAskAdapter.changeCursor(cursor);
-    }
+            AskEntity ask = AskDao.getAsk(context);
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        loader.reset();
+            if (ask == null) {
+                User user = UserDao.getCurrentUser(context);
+                GetAsksHelper.getTasks(new Token(user.getAccess_token()), context);
+            }
+
+            ask = AskDao.getAsk(context);
+
+            return ask;
+        }
+
+        @Override
+        protected void onPostExecute(final AskEntity askEntity) {
+            fragment.askText.setText(askEntity.getText());
+
+            if (askEntity.getLeft().getType().equals("txt")) {
+                fragment.leftButton.setText(askEntity.getLeft().getValue());
+                fragment.leftButton.setVisibility(View.VISIBLE);
+            }
+
+            if (askEntity.getRight().getType().equals("txt")) {
+                fragment.rightButton.setText(askEntity.getRight().getValue());
+                fragment.rightButton.setVisibility(View.VISIBLE);
+            }
+//            leftImage.setImageBitmap(ImageHelper.base64ToBitmap(askEntity.getLeft().getValue()));
+//            rightImage.setImageBitmap(ImageHelper.base64ToBitmap(askEntity.getLeft().getValue()));
+
+        }
     }
 }

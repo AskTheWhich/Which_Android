@@ -16,19 +16,11 @@ import android.view.View;
 
 import com.which.R;
 import com.which.activities.fragments.AskFragment;
-import com.which.data.dao.AskDao;
 import com.which.data.dao.UserDao;
 import com.which.data.db.WhichContract;
 import com.which.data.entitties.User;
-import com.which.utils.AskAPI;
-import com.which.utils.ServerConnection;
-import com.which.utils.resources.AskList;
+import com.which.utils.helper.GetAsksHelper;
 import com.which.utils.resources.Token;
-
-import java.io.IOException;
-
-import retrofit2.Call;
-import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
@@ -121,19 +113,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
 
         @Override
         protected Void doInBackground(Void... voids) {
-            AskAPI api = ServerConnection.createAskAPI();
-
-            Call<AskList> askListCall = api.getAsks(token);
-
-            try {
-                Response<AskList> response = askListCall.execute();
-
-                if (response.isSuccessful()) {
-                    AskDao.bulkSaveAsks(context, response.body().getAsks());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            GetAsksHelper.getTasks(token, context);
 
             return null;
         }
@@ -143,6 +123,7 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
             super.onPostExecute(aVoid);
 
             getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.container, new AskListFragment(), "")
                     .replace(R.id.container, new AskFragment(), "")
                     .addToBackStack(null)
                     .commit();
