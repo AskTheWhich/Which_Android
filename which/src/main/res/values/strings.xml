@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Which</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="error_invalid_email">This username address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing username
+        completions."
+    </string>
+    <string name="icon_for_the_app">Icon for the app</string>
+    <string name="ask_the_which">Ask The Which</string>
+    <string name="title_activity_register">Register</string>
+    <string name="logout">Logout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="skip">Skip</string>
+    <string name="no_questions_message">The are currently no more question.\nPlease try again later or add your own questions :)</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="question_field">Enter Your Question Here</string>
+    <string name="create_question">Create a Question</string>
+    <string name="left_answer">Left Answer</string>
+    <string name="right_answer">Right Answer</string>
+    <string name="text_answer">Text Answer</string>
+    <string name="submit">Submit</string>
+    <string name="add_picture">Add Picture</string>
+    <string name="username">Username</string>
+</resources>
