@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 finish();
             }
-        }, 0); // TODO: Change to 3000
+        }, 3000);
     }
 
     private class LoadAppTask extends AsyncTask<Void, Void, User> {

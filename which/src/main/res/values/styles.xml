@@ -17,4 +17,17 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="error_text">
+        <item name="android:textColor">#ff0000</item>
+    </style>
+
+    <style name="ApplicationStyle" parent="android:Theme">
+        <item name="android:buttonStyle">@style/which_button</item>
+    </style>
+
+    <style name="which_button">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
 </resources>

@@ -61,6 +61,16 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         startActivity(intent);
     }
 
+    public void showProgress(boolean show) {
+        if (show) {
+            findViewById(R.id.ask_progress).setVisibility(View.VISIBLE);
+            findViewById(R.id.home_content).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.home_content).setVisibility(View.VISIBLE);
+            findViewById(R.id.ask_progress).setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -134,6 +144,11 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
         @Override
+        protected void onPreExecute() {
+            ((HomeActivity)context).showProgress(true);
+        }
+
+        @Override
         protected Void doInBackground(Void... voids) {
             GetAsksHelper.getTasks(token, context);
 
@@ -144,6 +159,8 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            ((HomeActivity) context).showProgress(false);
+
             getSupportFragmentManager().beginTransaction()
 //                    .replace(R.id.container, new AskListFragment(), "")
                     .replace(R.id.container, new AskFragment(), "")
@@ -151,4 +168,5 @@ public class HomeActivity extends AppCompatActivity implements LoaderManager.Loa
                     .commit();
         }
     }
+
 }

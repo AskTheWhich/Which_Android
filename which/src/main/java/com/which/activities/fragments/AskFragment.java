@@ -13,8 +13,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.which.R;
+import com.which.activities.HomeActivity;
 import com.which.data.dao.AskDao;
 import com.which.data.dao.UserDao;
 import com.which.data.entitties.User;
@@ -100,6 +102,7 @@ public class AskFragment extends Fragment {
         private AskFragment askFragment;
 
         private AnswerOnClickListener(String direction, Context context, AskFragment askFragment) {
+            ((HomeActivity) askFragment.getActivity()).showProgress(true);
             this.direction = direction;
             this.context = context;
             this.askFragment = askFragment;
@@ -199,9 +202,13 @@ public class AskFragment extends Fragment {
 
         @Override
         protected void onPostExecute(final AskEntity askEntity) {
+            ((HomeActivity) getActivity()).showProgress(false);
+
             if (askEntity == null) {
                 fragment.mContent.setVisibility(View.GONE);
                 fragment.noQuestions.setVisibility(View.VISIBLE);
+
+                Toast.makeText(fragment.getActivity(), "Something went wrong, please try again later", Toast.LENGTH_LONG).show();
                 return;
             } else {
                 fragment.noQuestions.setVisibility(View.GONE);

@@ -12,88 +12,109 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.fragments.AskFragment">
 
-    <LinearLayout
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/ask_text_view"
+    <ProgressBar
+        android:id="@+id/ask_post_progress"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
 
     <LinearLayout
-        android:weightSum="2"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:visibility="gone"
-                android:id="@+id/left_image_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="1"
-                android:scaleType="centerCrop" />
-
-            <Button
-                android:visibility="gone"
-                android:id="@+id/left_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:visibility="gone"
-                android:id="@+id/right_image_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="1"
-                android:scaleType="centerCrop" />
-
-            <Button
-                android:visibility="gone"
-                android:id="@+id/right_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/skip_button"
-        android:layout_gravity="bottom"
-        android:text="@string/skip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/no_questions_view"
-        android:visibility="gone"
+        android:id="@+id/ask_content"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:text="@string/no_questions_message"
+
+
+
+
+        <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ask_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+            <LinearLayout
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:visibility="gone"
+                        android:id="@+id/left_image_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="0"
+                        android:layout_row="1"
+                        android:scaleType="centerCrop" />
+
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/left_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:visibility="gone"
+                        android:id="@+id/right_image_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_row="1"
+                        android:scaleType="centerCrop" />
+
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/right_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/skip_button"
+                android:layout_gravity="bottom"
+                android:text="@string/skip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/which_button" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/no_questions_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="@string/no_questions_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -35,18 +35,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp">
                 <ImageView
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:src="@mipmap/ic_launcher_web"
                     android:contentDescription="@string/icon_for_the_app" />
             </FrameLayout>
-
-            <!-- Prevent auto focus on load -->
-            <LinearLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:layout_width="0dp"
-                android:layout_height="0dp"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -86,25 +81,33 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-                <Button
-                    android:id="@+id/email_sign_in_button"
-                    style="?android:textAppearanceSmall"
+                <TextView
+                    android:id="@+id/login_error"
+                    style="@style/error_text"
+                    android:visibility="invisible"
+                    android:text="@string/login_error_text"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/email_register_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_register"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/email_sign_in_button"
+                style="@style/which_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_sign_in"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/email_register_button"
+                style="@style/which_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_register"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>

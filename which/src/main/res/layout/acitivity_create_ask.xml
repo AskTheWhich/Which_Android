@@ -132,5 +132,6 @@
         android:text="@string/submit"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
+        style="@style/which_button"
         android:layout_height="wrap_content" />
 </LinearLayout>
